@@ -27,6 +27,11 @@ function Index() {
     queryKey: ["cuisines"],
     queryFn: async () => (await supabase.from("cuisines").select("*").order("sort_order")).data ?? [],
   });
+  const { data: featured = [] } = useQuery({
+    queryKey: ["featured"],
+    queryFn: async () =>
+      (await supabase.from("recipes").select("id,title,description,prep_minutes,cook_minutes,cuisines(name)").eq("status", "published").order("created_at", { ascending: false }).limit(6)).data ?? [],
+  });
   const { data: inSeason = [] } = useQuery({
     queryKey: ["in-season", month],
     queryFn: async () =>
@@ -77,6 +82,31 @@ function Index() {
       </section>
 
       <section>
+        <div className="mb-3 flex items-baseline justify-between">
+          <h2 className="text-2xl font-semibold">Featured meals</h2>
+        </div>
+        {featured.length === 0 && <p className="text-muted-foreground">New recipes are on the way.</p>}
+        <ul className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2">
+          {featured.map((r) => (
+            <li key={r.id} className="w-64 shrink-0 snap-start">
+              <Link
+                to="/recipe/$recipeId"
+                params={{ recipeId: r.id }}
+                className="flex h-full min-h-36 flex-col rounded-lg border border-border bg-card p-4 shadow-sm hover:bg-secondary"
+              >
+                <span className="text-sm font-semibold text-primary">{r.cuisines?.name}</span>
+                <span className="text-lg font-semibold">{r.title}</span>
+                <span className="mt-1 text-muted-foreground">{r.description}</span>
+                <span className="mt-auto pt-2 text-sm">
+                  {(r.prep_minutes ?? 0) + (r.cook_minutes ?? 0)} min
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
         <h2 className="mb-3 text-2xl font-semibold">What do you like to cook?</h2>
         {cuisines.length === 0 && <p className="text-muted-foreground">Cuisines are coming soon.</p>}
         <div className="grid grid-cols-2 gap-3">
@@ -91,6 +121,9 @@ function Index() {
             </Link>
           ))}
         </div>
+        <Button asChild variant="outline" size="lg" className="mt-4 h-12 w-full text-base">
+          <Link to="/nearby">Browse places to buy fresh food</Link>
+        </Button>
       </section>
     </div>
   );
