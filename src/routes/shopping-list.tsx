@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { getListIngredients } from "@/lib/sources.functions";
 import { getLocalList } from "@/lib/device";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/shopping-list")({
   head: () => ({
@@ -19,11 +20,14 @@ export const Route = createFileRoute("/shopping-list")({
 function ShoppingList() {
   const [ids, setIds] = useState<string[]>([]);
   useEffect(() => setIds(getLocalList()), []);
-  const { data: items = [] } = useQuery({
+  const {
+    data: items = [],
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["list", ids],
     enabled: ids.length > 0,
-    queryFn: async () =>
-      (await supabase.from("recipe_ingredients").select("*").in("recipe_id", ids)).data ?? [],
+    queryFn: () => getListIngredients({ data: { ids } }),
   });
   const fresh = items.filter((i) => !i.is_pantry);
   const pantry = items.filter((i) => i.is_pantry);
@@ -31,6 +35,12 @@ function ShoppingList() {
   return (
     <div className="space-y-5">
       <h1 className="text-3xl font-semibold">Shopping list</h1>
+      {isError && (
+        <div role="alert" className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4">
+          <p>We couldn’t load your list right now.</p>
+          <Button className="h-11" onClick={() => refetch()}>Try again</Button>
+        </div>
+      )}
       {ids.length === 0 && <p className="text-muted-foreground">Add a recipe to start your list.</p>}
       {[["Fresh food", fresh], ["Pantry", pantry]].map(([title, list]) =>
         (list as typeof items).length ? (
