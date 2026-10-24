@@ -244,7 +244,9 @@ describe("Shopping list page", () => {
 
     expect(await screen.findByText("Pepper")).toBeInTheDocument();
     expect(screen.queryByText("Salt")).not.toBeInTheDocument();
-    const stored = JSON.parse(localStorage.getItem("lets-eat-custom-items") || "[]");
+    const stored = JSON.parse(localStorage.getItem("lets-eat-custom-items") || "[]") as {
+      name: string;
+    }[];
     expect(stored.map((i) => i.name)).toEqual(["Pepper"]);
   });
 });
