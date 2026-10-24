@@ -23,7 +23,7 @@ describe("recipe list", () => {
     const all = [r(), r({ cuisines: { name: "Mexican" } })];
     const out = byCuisine(all, "Mexican");
     expect(out).toHaveLength(1);
-    expect(out[0].cuisines?.name).toBe("Mexican");
+    expect(out[0]?.cuisines?.name).toBe("Mexican");
   });
 
   it("adds prep and cook time together", () => {
