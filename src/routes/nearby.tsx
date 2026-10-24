@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { nearbyPlaces, type LatLng } from "@/lib/places";
+import { RADII, nextRadius } from "@/lib/radius";
 import { PlaceCard } from "@/components/PlaceCard";
 import { geocodeAddress } from "@/lib/geocode.functions";
 
@@ -87,6 +88,7 @@ function Nearby() {
 
   const shown = nearbyPlaces(sources, active, origin, radius);
   const toggle = (k: string) => setActive((a) => (a.includes(k) ? a.filter((x) => x !== k) : [...a, k]));
+  const expand = nextRadius(radius);
 
   const selectFromMap = (id: string) => {
     setSelected(id);
@@ -115,7 +117,7 @@ function Nearby() {
       </form>
 
       <div role="group" aria-label="Distance" className="flex gap-2">
-        {[2, 5, 10, 20].map((r) => (
+        {RADII.map((r) => (
           <button
             key={r}
             onClick={() => setRadius(r)}
@@ -148,8 +150,25 @@ function Nearby() {
       {!origin && <p className="text-muted-foreground">Enter an address to see distances. Showing all places for now.</p>}
       <ul className="space-y-3">
         {shown.length === 0 && (
-          <li className="text-muted-foreground">
-            No places found{origin ? ` within ${radius} miles` : ""}. Try a bigger distance or fewer filters.
+          <li className="rounded-lg border border-dashed border-border bg-card p-5 text-center">
+            <h2 className="text-lg font-semibold">
+              {origin ? `No places within ${radius} miles yet` : "No places match your filters yet"}
+            </h2>
+            <p className="mt-1 text-muted-foreground">
+              {origin && !expand
+                ? "That's the widest search we offer. We're adding more places all the time — check back soon."
+                : "The closest places may be a little farther out, or a filter may be hiding them."}
+            </p>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
+              {origin && expand && (
+                <Button onClick={() => setRadius(expand)}>Show places within {expand} miles</Button>
+              )}
+              {active.length > 0 && (
+                <Button variant="outline" onClick={() => setActive([])}>
+                  Clear filters
+                </Button>
+              )}
+            </div>
           </li>
         )}
         {shown.map((s) => (
