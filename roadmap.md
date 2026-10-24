@@ -5,4 +5,5 @@
 - [x] More Detroit urban farms (D-Town, Oakland Ave, Feedom Freedom)
 - [x] /admin verification dashboard: manage/verify sources, produce, recipes
 - [x] Source URL, contact (phone/email) and last-verified date on every place
-- [ ] Later: map, cost panel, AI drafts
+- [x] Nearby: OR filters, Leaflet map, address search, radius, distance sort
+- [ ] Later: cost panel, AI drafts
