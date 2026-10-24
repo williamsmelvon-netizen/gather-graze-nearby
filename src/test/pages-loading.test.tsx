@@ -64,13 +64,14 @@ const source = {
   verified_on: "2026-10-24",
 };
 
-function renderRoute(path: string) {
+async function renderRoute(path: string) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const router = createRouter({
     routeTree,
     context: { queryClient },
     history: createMemoryHistory({ initialEntries: [path] }),
   });
+  await router.load();
   render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
