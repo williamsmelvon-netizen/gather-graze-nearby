@@ -6,4 +6,5 @@
 - [x] /admin verification dashboard: manage/verify sources, produce, recipes
 - [x] Source URL, contact (phone/email) and last-verified date on every place
 - [x] Nearby: OR filters, Leaflet map, address search, radius, distance sort
+- [ ] Nearby: link each map pin to its place detail card
 - [ ] Later: cost panel, AI drafts
