@@ -17,3 +17,4 @@
 - [ ] Later: cost panel, AI drafts
 - [x] Recipes tab blank: load recipes via app server (browser can't reach data host directly), show errors
 - [x] Home, cuisine and recipe pages load through the app server
+- [x] Shopping list: remove custom items from "My items"; removals stay gone after leaving and reopening
