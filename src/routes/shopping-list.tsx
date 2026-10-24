@@ -5,6 +5,7 @@ import { getListIngredients } from "@/lib/sources.functions";
 import * as device from "../lib/device";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/shopping-list")({
   head: () => ({
@@ -98,16 +99,17 @@ function ShoppingList() {
       {custom.length > 0 && (
         <section>
           <h2 className="mb-2 text-xl font-semibold">My items</h2>
-          <ul className="space-y-1">
+          <ul className="divide-y divide-border">
             {custom.map((item) => (
-              <li key={item.id} className="flex items-center justify-between gap-3">
-                <span>{item.name}</span>
+              <li key={item.id} className="flex items-center justify-between gap-3 py-2">
+                <span className="text-base">{item.name}</span>
                 <Button
-                  variant="ghost"
-                  className="h-11 min-w-11 px-3 text-muted-foreground"
+                  variant="outline"
+                  className="h-11 shrink-0 gap-2 px-3"
                   aria-label={`Remove ${item.name}`}
                   onClick={() => dropItem(item.id)}
                 >
+                  <Trash2 className="h-4 w-4" aria-hidden />
                   Remove
                 </Button>
               </li>
