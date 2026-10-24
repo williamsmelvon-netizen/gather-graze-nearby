@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Home, MapPin, ShoppingBasket, Info } from "lucide-react";
+import { Home, MapPin, ShoppingBasket, Info, UtensilsCrossed } from "lucide-react";
 import type { ReactNode } from "react";
 
 const nav = [
   { to: "/", label: "Home", icon: Home },
+  { to: "/recipes", label: "Recipes", icon: UtensilsCrossed },
   { to: "/nearby", label: "Nearby", icon: MapPin },
   { to: "/shopping-list", label: "List", icon: ShoppingBasket },
   { to: "/about", label: "About", icon: Info },
@@ -26,7 +27,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         aria-label="Main"
         className="fixed inset-x-0 bottom-0 border-t border-border bg-card"
       >
-        <ul className="mx-auto grid max-w-2xl grid-cols-4">
+        <ul className="mx-auto grid max-w-2xl grid-cols-5">
           {nav.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <Link

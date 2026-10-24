@@ -104,6 +104,9 @@ function Index() {
             </li>
           ))}
         </ul>
+        <Button asChild variant="outline" size="lg" className="mt-4 h-12 w-full text-base">
+          <Link to="/recipes">Browse all recipes</Link>
+        </Button>
       </section>
 
       <section>
