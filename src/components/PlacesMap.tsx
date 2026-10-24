@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import type { Map as LMap, LayerGroup, CircleMarker as LCircleMarker } from "leaflet";
 import type { LatLng } from "@/lib/places";
 
-type Pin = { id: string; name: string; lat: number | null; lng: number | null; double_up: boolean | null };
+type Pin = { id: string; name: string; lat: number | null; lng: number | null; double_up: boolean | null; distance?: number | null };
 
 export default function PlacesMap({
   places,
@@ -70,7 +70,7 @@ export default function PlacesMap({
           fillColor: p.double_up ? accent : primary,
           fillOpacity: 0.9,
         })
-        .bindPopup(p.name)
+        .bindPopup(p.distance != null ? `${p.name} · ${p.distance.toFixed(1)} mi` : p.name)
         .on("click", () => onSelect?.(p.id))
         .addTo(layer.current);
       markers.current[p.id] = marker;

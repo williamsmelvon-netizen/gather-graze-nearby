@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           Let’s Eat
         </Link>
       </header>
-      <main className="flex-1 px-4 pb-6">{children}</main>
+      <main className="flex-1 px-4 pb-24">{children}</main>
       <footer className="px-4 pb-28 text-sm text-muted-foreground">
         Program rules change. Confirm with the market or store, or at michigan.gov. Prices are
         estimates.

@@ -11,3 +11,4 @@
 - Shopping lists are device-scoped: access only via security-definer RPCs get_shopping_list/save_shopping_list keyed on a localStorage device id (no direct table grants), because there is no login for shoppers.
 - Admin access is checked via public.user_roles + has_role(); all content writes are admin-only in RLS.
 - Address lookup goes through a server function calling OpenStreetMap Nominatim, bounded to Detroit/Hamtramck/Highland Park; the map is Leaflet loaded client-only (lazy + ClientOnly) to keep it out of SSR and the initial bundle.
+- The bottom navigation is a fixed overlay: keep html scroll-padding-bottom and main's bottom padding taller than the nav, so content scrolled into view is never hidden behind it.
