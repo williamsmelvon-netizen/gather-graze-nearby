@@ -33,6 +33,12 @@ function Index() {
 
   return (
     <div className="space-y-8">
+      {isError && (
+        <div role="alert" className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4">
+          <p>We couldn’t load meals right now.</p>
+          <Button className="h-11" onClick={() => refetch()}>Try again</Button>
+        </div>
+      )}
       <form
         className="space-y-3"
         onSubmit={(e) => {
