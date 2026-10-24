@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { LocateFixed } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { listSources } from "@/lib/sources.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,9 +52,9 @@ function Nearby() {
   const [status, setStatus] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
 
-  const { data: sources = [] } = useQuery({
+  const { data: sources = [], isError, refetch } = useQuery({
     queryKey: ["sources"],
-    queryFn: async () => (await supabase.from("sources").select("*").order("name")).data ?? [],
+    queryFn: () => listSources(),
   });
 
   const locate = () => {
@@ -98,6 +98,12 @@ function Nearby() {
   return (
     <div className="space-y-5">
       <h1 className="text-3xl font-semibold">Nearby</h1>
+      {isError && (
+        <div role="alert" className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4">
+          <p>We couldn’t load places right now.</p>
+          <Button className="h-11" onClick={() => refetch()}>Try again</Button>
+        </div>
+      )}
       <form
         className="space-y-2"
         onSubmit={(e) => {
