@@ -14,3 +14,4 @@
 - [x] Recipes tab + Browse All Recipes page
 - [x] Add 10 more recipes (25 total, 5 per cuisine)
 - [ ] Later: cost panel, AI drafts
+- [ ] Recipes tab blank: load recipes via app server (browser can't reach data host directly), show errors
