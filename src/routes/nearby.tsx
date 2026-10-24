@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { nearbyPlaces, type LatLng } from "@/lib/places";
+import { PlaceCard } from "@/components/PlaceCard";
 import { geocodeAddress } from "@/lib/geocode.functions";
 
 const PlacesMap = lazy(() => import("@/components/PlacesMap"));
@@ -37,13 +38,6 @@ const filters = [
   { key: "grocery", label: "Grocery" },
 ] as const;
 
-const typeLabel: Record<string, string> = {
-  grocery: "Grocery",
-  farmers_market: "Farmers market",
-  farm_stand: "Farm stand",
-  csa: "CSA",
-  garden_store: "Garden store",
-};
 
 const MapFallback = () => <div className="h-72 rounded-lg bg-muted" aria-hidden />;
 
@@ -95,6 +89,11 @@ function Nearby() {
   const shown = nearbyPlaces(sources, active, origin, radius);
   const toggle = (k: string) => setActive((a) => (a.includes(k) ? a.filter((x) => x !== k) : [...a, k]));
 
+  const selectFromMap = (id: string) => {
+    setSelected(id);
+    document.getElementById(`place-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   return (
     <div className="space-y-5">
       <h1 className="text-3xl font-semibold">Nearby</h1>
@@ -143,7 +142,7 @@ function Nearby() {
 
       <ClientOnly fallback={<MapFallback />}>
         <Suspense fallback={<MapFallback />}>
-          <PlacesMap places={shown} origin={origin} radiusMiles={radius} onSelect={setSelected} />
+          <PlacesMap places={shown} origin={origin} radiusMiles={radius} selectedId={selected} onSelect={selectFromMap} />
         </Suspense>
       </ClientOnly>
 
