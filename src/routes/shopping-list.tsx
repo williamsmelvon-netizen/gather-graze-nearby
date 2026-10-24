@@ -55,8 +55,32 @@ function ShoppingList() {
           <Button className="h-11" onClick={() => refetch()}>Try again</Button>
         </div>
       )}
-      {ids.length === 0 && <p className="text-muted-foreground">Add a recipe to start your list.</p>}
-      {[["Fresh food", fresh], ["Pantry", pantry]].map(([title, list]) =>
+      {ids.length === 0 && custom.length === 0 && (
+        <p className="text-muted-foreground">Add a recipe to start your list.</p>
+      )}
+      <form
+        className="flex gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          addItem();
+        }}
+      >
+        <Input
+          className="h-11"
+          aria-label="Add item"
+          placeholder="Add an item, e.g. vegetable oil"
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+          maxLength={100}
+        />
+        <Button type="submit" className="h-11 shrink-0">
+          Add
+        </Button>
+      </form>
+      {[
+        ["Fresh food", fresh],
+        ["Pantry", pantry],
+      ].map(([title, list]) =>
         (list as typeof items).length ? (
           <section key={title as string}>
             <h2 className="mb-2 text-xl font-semibold">{title as string}</h2>
@@ -70,6 +94,26 @@ function ShoppingList() {
             </ul>
           </section>
         ) : null,
+      )}
+      {custom.length > 0 && (
+        <section>
+          <h2 className="mb-2 text-xl font-semibold">My items</h2>
+          <ul className="space-y-1">
+            {custom.map((item) => (
+              <li key={item.id} className="flex items-center justify-between gap-3">
+                <span>{item.name}</span>
+                <Button
+                  variant="ghost"
+                  className="h-11 min-w-11 px-3 text-muted-foreground"
+                  aria-label={`Remove ${item.name}`}
+                  onClick={() => dropItem(item.id)}
+                >
+                  Remove
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   );
