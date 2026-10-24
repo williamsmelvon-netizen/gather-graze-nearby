@@ -10,6 +10,6 @@
 - [x] Nearby: clear last-verified date on each place card
 - [x] Nearby: distance options 2/5/10/20 mi, default 10
 - [x] Nearby: empty state with one-tap widen
-- [ ] Nearby: distance shown on each place card and map pin
+- [x] Nearby: distance shown on each place card and map pin
 - [ ] Later: cost panel, AI drafts
 - [ ] Later: cost panel, AI drafts
