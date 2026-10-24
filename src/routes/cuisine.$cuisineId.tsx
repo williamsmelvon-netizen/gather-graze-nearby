@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { getCuisine } from "@/lib/recipes.functions";
+import { LoadError } from "@/components/LoadError";
 
 export const Route = createFileRoute("/cuisine/$cuisineId")({
   head: () => ({
