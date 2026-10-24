@@ -211,6 +211,24 @@ describe("Shopping list page", () => {
     expect(await screen.findByText(/collard greens/)).toBeInTheDocument();
     expect(listIngredients).toHaveBeenCalledTimes(2);
   });
+
+  it("adds a custom item and stores it on the device", async () => {
+    await renderRoute("/shopping-list");
+
+    fireEvent.change(await screen.findByLabelText("Add item"), { target: { value: "Vegetable oil" } });
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(await screen.findByText("Vegetable oil")).toBeInTheDocument();
+    const stored = JSON.parse(localStorage.getItem("lets-eat-custom-items") || "[]");
+    expect(stored[0].name).toBe("Vegetable oil");
+  });
+
+  it("shows previously added custom items on load", async () => {
+    localStorage.setItem("lets-eat-custom-items", JSON.stringify([{ id: "c1", name: "Salt" }]));
+    await renderRoute("/shopping-list");
+
+    expect(await screen.findByText("Salt")).toBeInTheDocument();
+  });
 });
 
 describe("Nearby page", () => {
