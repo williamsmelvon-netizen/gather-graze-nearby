@@ -44,7 +44,7 @@ export function SourcesAdmin() {
     const res = id
       ? await supabase.from("sources").update(rest).eq("id", id)
       : await supabase.from("sources").insert({ name: rest.name ?? "", type: rest.type ?? "farm_stand", ...rest });
-    if (res.error) return toast.error(res.error.message);
+    if (res.error) { toast.error(res.error.message); return; }
     toast.success("Saved");
     setEditing(null);
     refresh();

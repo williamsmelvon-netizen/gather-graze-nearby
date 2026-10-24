@@ -14,7 +14,7 @@ export function RecipesAdmin() {
 
   const setStatus = async (id: string, status: "draft" | "published") => {
     const { error } = await supabase.from("recipes").update({ status }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(status === "published" ? "Published" : "Moved to drafts");
     qc.invalidateQueries({ queryKey: ["admin-recipes"] });
   };

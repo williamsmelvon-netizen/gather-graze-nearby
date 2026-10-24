@@ -25,7 +25,7 @@ export function ProduceAdmin() {
     const res = id
       ? await supabase.from("produce").update(row).eq("id", id)
       : await supabase.from("produce").insert(row);
-    if (res.error) return toast.error(res.error.message);
+    if (res.error) { toast.error(res.error.message); return; }
     toast.success("Saved");
     if (!id) e.currentTarget.reset();
     qc.invalidateQueries({ queryKey: ["admin-produce"] });
