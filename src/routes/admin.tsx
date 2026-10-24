@@ -5,6 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SourcesAdmin } from "@/components/admin/SourcesAdmin";
+import { ProduceAdmin } from "@/components/admin/ProduceAdmin";
+import { RecipesAdmin } from "@/components/admin/RecipesAdmin";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -69,7 +73,18 @@ function Admin() {
     <div className="space-y-4">
       <h1 className="text-3xl font-semibold">Admin</h1>
       {isAdmin === false && <p>This account doesn’t have admin access.</p>}
-      {isAdmin && <p>Tools for sources, produce, recipes and program rules are coming next.</p>}
+      {isAdmin && (
+        <Tabs defaultValue="sources">
+          <TabsList className="grid h-12 w-full grid-cols-3">
+            <TabsTrigger value="sources" className="h-10">Places</TabsTrigger>
+            <TabsTrigger value="produce" className="h-10">Produce</TabsTrigger>
+            <TabsTrigger value="recipes" className="h-10">Recipes</TabsTrigger>
+          </TabsList>
+          <TabsContent value="sources"><SourcesAdmin /></TabsContent>
+          <TabsContent value="produce"><ProduceAdmin /></TabsContent>
+          <TabsContent value="recipes"><RecipesAdmin /></TabsContent>
+        </Tabs>
+      )}
       <Button variant="secondary" onClick={() => supabase.auth.signOut()}>Sign out</Button>
     </div>
   );

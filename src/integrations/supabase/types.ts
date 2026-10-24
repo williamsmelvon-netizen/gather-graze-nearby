@@ -257,45 +257,60 @@ export type Database = {
         Row: {
           accepts_snap: boolean | null
           address: string | null
+          contact_name: string | null
           created_at: string | null
           double_up: boolean | null
+          email: string | null
           hours_note: string | null
           id: string
           lat: number | null
           lng: number | null
           name: string
+          phone: string | null
           season_note: string | null
+          source_url: string | null
           type: string
+          verification_notes: string | null
           verified_on: string | null
           website: string | null
         }
         Insert: {
           accepts_snap?: boolean | null
           address?: string | null
+          contact_name?: string | null
           created_at?: string | null
           double_up?: boolean | null
+          email?: string | null
           hours_note?: string | null
           id?: string
           lat?: number | null
           lng?: number | null
           name: string
+          phone?: string | null
           season_note?: string | null
+          source_url?: string | null
           type: string
+          verification_notes?: string | null
           verified_on?: string | null
           website?: string | null
         }
         Update: {
           accepts_snap?: boolean | null
           address?: string | null
+          contact_name?: string | null
           created_at?: string | null
           double_up?: boolean | null
+          email?: string | null
           hours_note?: string | null
           id?: string
           lat?: number | null
           lng?: number | null
           name?: string
+          phone?: string | null
           season_note?: string | null
+          source_url?: string | null
           type?: string
+          verification_notes?: string | null
           verified_on?: string | null
           website?: string | null
         }

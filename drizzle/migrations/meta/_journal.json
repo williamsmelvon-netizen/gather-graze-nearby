@@ -8,6 +8,13 @@
       "when": 1792854902057,
       "tag": "0000_lets_eat_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792855657200,
+      "tag": "0001_source_tracing_fields",
+      "breakpoints": true
     }
   ]
 }

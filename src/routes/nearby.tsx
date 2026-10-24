@@ -90,6 +90,22 @@ function Nearby() {
             <p className="text-muted-foreground">{typeLabel[s.type] ?? s.type}</p>
             {s.address && <p>{s.address}</p>}
             {s.hours_note && <p className="text-sm">{s.hours_note}</p>}
+            {(s.phone || s.email) && (
+              <p className="text-sm">
+                {s.phone && <a className="underline" href={`tel:${s.phone}`}>{s.phone}</a>}
+                {s.phone && s.email && " · "}
+                {s.email && <a className="underline" href={`mailto:${s.email}`}>{s.email}</a>}
+              </p>
+            )}
+            <p className="text-sm text-muted-foreground">
+              {s.verified_on ? `Last checked ${s.verified_on}` : "Not yet checked — call ahead"}
+              {(s.source_url || s.website) && (
+                <>
+                  {" · "}
+                  <a className="underline" href={(s.source_url || s.website)!} target="_blank" rel="noreferrer">Source</a>
+                </>
+              )}
+            </p>
           </li>
         ))}
       </ul>
