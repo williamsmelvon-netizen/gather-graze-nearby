@@ -148,3 +148,8 @@
   }
   h1, h2, h3 { font-family: var(--font-display); }
 }
+
+/* Keep content clear of the fixed bottom navigation */
+html {
+  scroll-padding-bottom: 5.5rem;
+}
