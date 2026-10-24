@@ -51,8 +51,8 @@ export function PlaceCard({
 }) {
   const source = place.source_url || place.website;
   const checked = place.verified_on
-    ? `Last checked ${place.verified_on}`
-    : "Not yet checked — call ahead";
+    ? `Last verified ${place.verified_on}`
+    : "Not yet verified — call ahead";
 
   return (
     <li
@@ -130,7 +130,7 @@ export function PlaceCard({
         </Row>
 
         <Row icon={<ShieldCheck className="h-5 w-5" />} label="Verification source">
-          <p className="text-sm">{checked}</p>
+          <p className="font-semibold">{checked}</p>
           {source && (
             <a className={linkClass} href={source} target="_blank" rel="noreferrer">
               {hostOf(source)}
