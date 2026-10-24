@@ -229,6 +229,24 @@ describe("Shopping list page", () => {
 
     expect(await screen.findByText("Salt")).toBeInTheDocument();
   });
+
+  it("removes a custom item and keeps it removed in stored data", async () => {
+    localStorage.setItem(
+      "lets-eat-custom-items",
+      JSON.stringify([
+        { id: "c1", name: "Salt" },
+        { id: "c2", name: "Pepper" },
+      ]),
+    );
+    await renderRoute("/shopping-list");
+
+    fireEvent.click(await screen.findByRole("button", { name: "Remove Salt" }));
+
+    expect(await screen.findByText("Pepper")).toBeInTheDocument();
+    expect(screen.queryByText("Salt")).not.toBeInTheDocument();
+    const stored = JSON.parse(localStorage.getItem("lets-eat-custom-items") || "[]");
+    expect(stored.map((i) => i.name)).toEqual(["Pepper"]);
+  });
 });
 
 describe("Nearby page", () => {
