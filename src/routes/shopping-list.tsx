@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getListIngredients } from "@/lib/sources.functions";
-import { getLocalList, addCustomItem, removeCustomItem, type CustomItem } from "@/lib/device";
+import { getLocalList, addCustomItem, removeCustomItem, type CustomItem } from "../lib/device";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
