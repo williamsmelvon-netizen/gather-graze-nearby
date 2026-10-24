@@ -8,7 +8,7 @@ type Search = { address?: string };
 
 export const Route = createFileRoute("/nearby")({
   validateSearch: (s: Record<string, unknown>): Search => ({
-    address: typeof s.address === "string" ? s.address : undefined,
+    address: typeof s["address"] === "string" ? s["address"] : undefined,
   }),
   head: () => ({
     meta: [
