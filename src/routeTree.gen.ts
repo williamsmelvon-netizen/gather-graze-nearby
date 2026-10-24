@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as NearbyRouteImport } from './routes/nearby'
+import { Route as RecipesRouteImport } from './routes/recipes'
 import { Route as ShoppingListRouteImport } from './routes/shopping-list'
 import { Route as CuisineCuisineIdRouteImport } from './routes/cuisine.$cuisineId'
 import { Route as RecipeRecipeIdRouteImport } from './routes/recipe.$recipeId'
@@ -37,6 +38,11 @@ const NearbyRoute = NearbyRouteImport.update({
   path: '/nearby',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecipesRoute = RecipesRouteImport.update({
+  id: '/recipes',
+  path: '/recipes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShoppingListRoute = ShoppingListRouteImport.update({
   id: '/shopping-list',
   path: '/shopping-list',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/nearby': typeof NearbyRoute
+  '/recipes': typeof RecipesRoute
   '/shopping-list': typeof ShoppingListRoute
   '/cuisine/$cuisineId': typeof CuisineCuisineIdRoute
   '/recipe/$recipeId': typeof RecipeRecipeIdRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/nearby': typeof NearbyRoute
+  '/recipes': typeof RecipesRoute
   '/shopping-list': typeof ShoppingListRoute
   '/cuisine/$cuisineId': typeof CuisineCuisineIdRoute
   '/recipe/$recipeId': typeof RecipeRecipeIdRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/nearby': typeof NearbyRoute
+  '/recipes': typeof RecipesRoute
   '/shopping-list': typeof ShoppingListRoute
   '/cuisine/$cuisineId': typeof CuisineCuisineIdRoute
   '/recipe/$recipeId': typeof RecipeRecipeIdRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/nearby'
+    | '/recipes'
     | '/shopping-list'
     | '/cuisine/$cuisineId'
     | '/recipe/$recipeId'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/nearby'
+    | '/recipes'
     | '/shopping-list'
     | '/cuisine/$cuisineId'
     | '/recipe/$recipeId'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/nearby'
+    | '/recipes'
     | '/shopping-list'
     | '/cuisine/$cuisineId'
     | '/recipe/$recipeId'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
   NearbyRoute: typeof NearbyRoute
+  RecipesRoute: typeof RecipesRoute
   ShoppingListRoute: typeof ShoppingListRoute
   CuisineCuisineIdRoute: typeof CuisineCuisineIdRoute
   RecipeRecipeIdRoute: typeof RecipeRecipeIdRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NearbyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recipes': {
+      id: '/recipes'
+      path: '/recipes'
+      fullPath: '/recipes'
+      preLoaderRoute: typeof RecipesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shopping-list': {
       id: '/shopping-list'
       path: '/shopping-list'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
   NearbyRoute: NearbyRoute,
+  RecipesRoute: RecipesRoute,
   ShoppingListRoute: ShoppingListRoute,
   CuisineCuisineIdRoute: CuisineCuisineIdRoute,
   RecipeRecipeIdRoute: RecipeRecipeIdRoute,
