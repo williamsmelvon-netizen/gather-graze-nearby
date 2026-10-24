@@ -20,7 +20,20 @@ export const Route = createFileRoute("/shopping-list")({
 
 function ShoppingList() {
   const [ids, setIds] = useState<string[]>([]);
-  useEffect(() => setIds(getLocalList()), []);
+  const [custom, setCustom] = useState<CustomItem[]>([]);
+  const [newItem, setNewItem] = useState("");
+  useEffect(() => {
+    setIds(getLocalList());
+    setCustom(getCustomItems());
+  }, []);
+
+  const addItem = () => {
+    const next = addCustomItem(newItem);
+    if (next !== custom) setCustom(next);
+    setNewItem("");
+  };
+
+  const dropItem = (id: string) => setCustom(removeCustomItem(id));
   const {
     data: items = [],
     isError,
