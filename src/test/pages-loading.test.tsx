@@ -92,7 +92,7 @@ describe("Home page", () => {
   it("loads cuisines, featured meals and produce through the server function", async () => {
     homeData.mockResolvedValue({ cuisines: [cuisine], featured: [recipeCard], inSeason: [{ name: "kale" }] } as never);
 
-    renderRoute("/");
+    await renderRoute("/");
 
     expect(await screen.findByText("Collard Greens")).toBeInTheDocument();
     expect(screen.getByText("kale")).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe("Home page", () => {
 
   it("shows an error with retry, and recovers when the retry succeeds", async () => {
     homeData.mockRejectedValueOnce(new Error("down"));
-    renderRoute("/");
+    await renderRoute("/");
 
     expect(await screen.findByRole("alert")).toHaveTextContent("We couldn’t load meals right now.");
 
@@ -117,7 +117,7 @@ describe("All recipes page", () => {
   it("loads every meal through the server function", async () => {
     recipesData.mockResolvedValue({ recipes: [recipeCard], cuisines: [cuisine] } as never);
 
-    renderRoute("/recipes");
+    await renderRoute("/recipes");
 
     expect(await screen.findByText("Collard Greens")).toBeInTheDocument();
     expect(recipesData).toHaveBeenCalledTimes(1);
@@ -125,7 +125,7 @@ describe("All recipes page", () => {
 
   it("shows an error with retry, and recovers when the retry succeeds", async () => {
     recipesData.mockRejectedValueOnce(new Error("down"));
-    renderRoute("/recipes");
+    await renderRoute("/recipes");
 
     expect(await screen.findByRole("alert")).toHaveTextContent("We couldn’t load recipes");
 
@@ -141,7 +141,7 @@ describe("Cuisine page", () => {
   it("loads the cuisine and its recipes through the server function", async () => {
     cuisineData.mockResolvedValue({ cuisine, recipes: [recipeCard] } as never);
 
-    renderRoute("/cuisine/c1");
+    await renderRoute("/cuisine/c1");
 
     expect(await screen.findByRole("heading", { name: "Soul Food" })).toBeInTheDocument();
     expect(screen.getByText("Collard Greens")).toBeInTheDocument();
@@ -150,7 +150,7 @@ describe("Cuisine page", () => {
 
   it("shows an error with retry, and recovers when the retry succeeds", async () => {
     cuisineData.mockRejectedValueOnce(new Error("down"));
-    renderRoute("/cuisine/c1");
+    await renderRoute("/cuisine/c1");
 
     expect(await screen.findByRole("alert")).toHaveTextContent("We couldn’t load this page");
 
@@ -166,7 +166,7 @@ describe("Recipe detail page", () => {
   it("loads the recipe and ingredients through the server function", async () => {
     recipeData.mockResolvedValue({ recipe: recipeFull, ingredients: [ingredient] } as never);
 
-    renderRoute("/recipe/r1");
+    await renderRoute("/recipe/r1");
 
     expect(await screen.findByRole("heading", { name: "Collard Greens" })).toBeInTheDocument();
     expect(screen.getByText(/collard greens/)).toBeInTheDocument();
@@ -175,7 +175,7 @@ describe("Recipe detail page", () => {
 
   it("shows an error with retry, and recovers when the retry succeeds", async () => {
     recipeData.mockRejectedValueOnce(new Error("down"));
-    renderRoute("/recipe/r1");
+    await renderRoute("/recipe/r1");
 
     expect(await screen.findByRole("alert")).toHaveTextContent("We couldn’t load this page");
 
@@ -192,7 +192,7 @@ describe("Shopping list page", () => {
     localStorage.setItem("lets-eat-list", JSON.stringify(["r1"]));
     listIngredients.mockResolvedValue([ingredient] as never);
 
-    renderRoute("/shopping-list");
+    await renderRoute("/shopping-list");
 
     expect(await screen.findByText(/collard greens/)).toBeInTheDocument();
     expect(listIngredients).toHaveBeenCalledTimes(1);
@@ -201,7 +201,7 @@ describe("Shopping list page", () => {
   it("shows an error with retry, and recovers when the retry succeeds", async () => {
     localStorage.setItem("lets-eat-list", JSON.stringify(["r1"]));
     listIngredients.mockRejectedValueOnce(new Error("down"));
-    renderRoute("/shopping-list");
+    await renderRoute("/shopping-list");
 
     expect(await screen.findByRole("alert")).toHaveTextContent("We couldn’t load your list right now.");
 
@@ -217,7 +217,7 @@ describe("Nearby page", () => {
   it("loads places through the server function", async () => {
     sourcesData.mockResolvedValue([source] as never);
 
-    renderRoute("/nearby");
+    await renderRoute("/nearby");
 
     expect(await screen.findByText("Eastern Market")).toBeInTheDocument();
     expect(sourcesData).toHaveBeenCalledTimes(1);
@@ -225,7 +225,7 @@ describe("Nearby page", () => {
 
   it("shows an error with retry, and recovers when the retry succeeds", async () => {
     sourcesData.mockRejectedValueOnce(new Error("down"));
-    renderRoute("/nearby");
+    await renderRoute("/nearby");
 
     expect(await screen.findByRole("alert")).toHaveTextContent("We couldn’t load places right now.");
 
