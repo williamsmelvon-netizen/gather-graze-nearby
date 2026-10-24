@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as NearbyRouteImport } from './routes/nearby'
+import { Route as ShoppingListRouteImport } from './routes/shopping-list'
+import { Route as CuisineCuisineIdRouteImport } from './routes/cuisine.$cuisineId'
+import { Route as RecipeRecipeIdRouteImport } from './routes/recipe.$recipeId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NearbyRoute = NearbyRouteImport.update({
+  id: '/nearby',
+  path: '/nearby',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShoppingListRoute = ShoppingListRouteImport.update({
+  id: '/shopping-list',
+  path: '/shopping-list',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CuisineCuisineIdRoute = CuisineCuisineIdRouteImport.update({
+  id: '/cuisine/$cuisineId',
+  path: '/cuisine/$cuisineId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipeRecipeIdRoute = RecipeRecipeIdRouteImport.update({
+  id: '/recipe/$recipeId',
+  path: '/recipe/$recipeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/nearby': typeof NearbyRoute
+  '/shopping-list': typeof ShoppingListRoute
+  '/cuisine/$cuisineId': typeof CuisineCuisineIdRoute
+  '/recipe/$recipeId': typeof RecipeRecipeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/nearby': typeof NearbyRoute
+  '/shopping-list': typeof ShoppingListRoute
+  '/cuisine/$cuisineId': typeof CuisineCuisineIdRoute
+  '/recipe/$recipeId': typeof RecipeRecipeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/nearby': typeof NearbyRoute
+  '/shopping-list': typeof ShoppingListRoute
+  '/cuisine/$cuisineId': typeof CuisineCuisineIdRoute
+  '/recipe/$recipeId': typeof RecipeRecipeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/nearby'
+    | '/shopping-list'
+    | '/cuisine/$cuisineId'
+    | '/recipe/$recipeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/nearby'
+    | '/shopping-list'
+    | '/cuisine/$cuisineId'
+    | '/recipe/$recipeId'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/nearby'
+    | '/shopping-list'
+    | '/cuisine/$cuisineId'
+    | '/recipe/$recipeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  NearbyRoute: typeof NearbyRoute
+  ShoppingListRoute: typeof ShoppingListRoute
+  CuisineCuisineIdRoute: typeof CuisineCuisineIdRoute
+  RecipeRecipeIdRoute: typeof RecipeRecipeIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nearby': {
+      id: '/nearby'
+      path: '/nearby'
+      fullPath: '/nearby'
+      preLoaderRoute: typeof NearbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shopping-list': {
+      id: '/shopping-list'
+      path: '/shopping-list'
+      fullPath: '/shopping-list'
+      preLoaderRoute: typeof ShoppingListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cuisine/$cuisineId': {
+      id: '/cuisine/$cuisineId'
+      path: '/cuisine/$cuisineId'
+      fullPath: '/cuisine/$cuisineId'
+      preLoaderRoute: typeof CuisineCuisineIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipe/$recipeId': {
+      id: '/recipe/$recipeId'
+      path: '/recipe/$recipeId'
+      fullPath: '/recipe/$recipeId'
+      preLoaderRoute: typeof RecipeRecipeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  NearbyRoute: NearbyRoute,
+  ShoppingListRoute: ShoppingListRoute,
+  CuisineCuisineIdRoute: CuisineCuisineIdRoute,
+  RecipeRecipeIdRoute: RecipeRecipeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
