@@ -44,7 +44,7 @@ function Nearby() {
   const { address } = Route.useSearch();
   const navigate = useNavigate({ from: "/nearby" });
   const geocode = useServerFn(geocodeAddress);
-  const [radius, setRadius] = useState(5);
+  const [radius, setRadius] = useState(10);
   const [active, setActive] = useState<string[]>([]);
   const [query, setQuery] = useState(address && address !== "my-location" ? address : "");
   const [origin, setOrigin] = useState<LatLng | null>(null);
@@ -115,7 +115,7 @@ function Nearby() {
       </form>
 
       <div role="group" aria-label="Distance" className="flex gap-2">
-        {[1, 3, 5].map((r) => (
+        {[2, 5, 10, 20].map((r) => (
           <button
             key={r}
             onClick={() => setRadius(r)}
