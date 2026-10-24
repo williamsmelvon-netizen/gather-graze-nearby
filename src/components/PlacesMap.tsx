@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
-import type { Map as LMap, LayerGroup } from "leaflet";
+import type { Map as LMap, LayerGroup, CircleMarker as LCircleMarker } from "leaflet";
 import type { LatLng } from "@/lib/places";
 
 type Pin = { id: string; name: string; lat: number | null; lng: number | null; double_up: boolean | null };
@@ -9,16 +9,19 @@ export default function PlacesMap({
   places,
   origin,
   radiusMiles,
+  selectedId,
   onSelect,
 }: {
   places: Pin[];
   origin: LatLng | null;
   radiusMiles: number;
+  selectedId?: string | null;
   onSelect?: (id: string) => void;
 }) {
   const el = useRef<HTMLDivElement>(null);
   const map = useRef<LMap | null>(null);
   const layer = useRef<LayerGroup | null>(null);
+  const markers = useRef<Record<string, LCircleMarker>>({});
   const L = useRef<typeof import("leaflet") | null>(null);
 
   useEffect(() => {
@@ -49,30 +52,41 @@ export default function PlacesMap({
     const primary = styles.getPropertyValue("--primary").trim();
     const accent = styles.getPropertyValue("--accent").trim();
     layer.current.clearLayers();
+    markers.current = {};
     const pts: [number, number][] = [];
+    if (origin) {
+      mod.circle([origin.lat, origin.lng], { radius: radiusMiles * 1609.34, color: primary, weight: 1, fillOpacity: 0.06, interactive: false }).addTo(layer.current);
+      mod.circleMarker([origin.lat, origin.lng], { radius: 7, color: primary, fillColor: primary, fillOpacity: 1 }).bindPopup("You").addTo(layer.current);
+      pts.push([origin.lat, origin.lng]);
+    }
     for (const p of places) {
       if (p.lat == null || p.lng == null) continue;
       pts.push([p.lat, p.lng]);
-      mod.circleMarker([p.lat, p.lng], {
-        radius: 11,
-        color: primary,
-        weight: 3,
-        fillColor: p.double_up ? accent : primary,
-        fillOpacity: 0.9,
-      })
+      const marker = mod
+        .circleMarker([p.lat, p.lng], {
+          radius: 11,
+          color: primary,
+          weight: 3,
+          fillColor: p.double_up ? accent : primary,
+          fillOpacity: 0.9,
+        })
         .bindPopup(p.name)
         .on("click", () => onSelect?.(p.id))
         .addTo(layer.current);
-    }
-    if (origin) {
-      mod.circle([origin.lat, origin.lng], { radius: radiusMiles * 1609.34, color: primary, weight: 1, fillOpacity: 0.06 }).addTo(layer.current);
-      mod.circleMarker([origin.lat, origin.lng], { radius: 7, color: primary, fillColor: primary, fillOpacity: 1 }).bindPopup("You").addTo(layer.current);
-      pts.push([origin.lat, origin.lng]);
+      markers.current[p.id] = marker;
     }
     if (pts.length) map.current.fitBounds(pts, { padding: [30, 30], maxZoom: 14 });
   };
 
   useEffect(draw, [places, origin, radiusMiles]);
+
+  useEffect(() => {
+    if (!map.current || !selectedId) return;
+    const marker = markers.current[selectedId];
+    if (!marker) return;
+    map.current.panTo(marker.getLatLng(), { animate: true });
+    marker.openPopup();
+  }, [selectedId, places]);
 
   return <div ref={el} className="h-72 w-full overflow-hidden rounded-lg border border-border" role="region" aria-label="Map of places" />;
 }

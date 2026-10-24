@@ -4,11 +4,11 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { LocateFixed } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { nearbyPlaces, type LatLng } from "@/lib/places";
+import { PlaceCard } from "@/components/PlaceCard";
 import { geocodeAddress } from "@/lib/geocode.functions";
 
 const PlacesMap = lazy(() => import("@/components/PlacesMap"));
@@ -37,13 +37,6 @@ const filters = [
   { key: "grocery", label: "Grocery" },
 ] as const;
 
-const typeLabel: Record<string, string> = {
-  grocery: "Grocery",
-  farmers_market: "Farmers market",
-  farm_stand: "Farm stand",
-  csa: "CSA",
-  garden_store: "Garden store",
-};
 
 const MapFallback = () => <div className="h-72 rounded-lg bg-muted" aria-hidden />;
 
@@ -95,6 +88,11 @@ function Nearby() {
   const shown = nearbyPlaces(sources, active, origin, radius);
   const toggle = (k: string) => setActive((a) => (a.includes(k) ? a.filter((x) => x !== k) : [...a, k]));
 
+  const selectFromMap = (id: string) => {
+    setSelected(id);
+    document.getElementById(`place-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   return (
     <div className="space-y-5">
       <h1 className="text-3xl font-semibold">Nearby</h1>
@@ -143,7 +141,7 @@ function Nearby() {
 
       <ClientOnly fallback={<MapFallback />}>
         <Suspense fallback={<MapFallback />}>
-          <PlacesMap places={shown} origin={origin} radiusMiles={radius} onSelect={setSelected} />
+          <PlacesMap places={shown} origin={origin} radiusMiles={radius} selectedId={selected} onSelect={selectFromMap} />
         </Suspense>
       </ClientOnly>
 
@@ -155,37 +153,7 @@ function Nearby() {
           </li>
         )}
         {shown.map((s) => (
-          <li
-            key={s.id}
-            className={`rounded-lg border bg-card p-4 ${selected === s.id ? "border-primary ring-2 ring-primary" : "border-border"}`}
-          >
-            <div className="flex items-start justify-between gap-2">
-              <h2 className="text-lg font-semibold">{s.name}</h2>
-              {s.double_up && <Badge className="text-sm">Double Up</Badge>}
-            </div>
-            <p className="text-muted-foreground">
-              {typeLabel[s.type] ?? s.type}
-              {s.distance != null && ` · ${s.distance.toFixed(1)} mi`}
-            </p>
-            {s.address && <p>{s.address}</p>}
-            {s.hours_note && <p className="text-sm">{s.hours_note}</p>}
-            {(s.phone || s.email) && (
-              <p className="text-sm">
-                {s.phone && <a className="underline" href={`tel:${s.phone}`}>{s.phone}</a>}
-                {s.phone && s.email && " · "}
-                {s.email && <a className="underline" href={`mailto:${s.email}`}>{s.email}</a>}
-              </p>
-            )}
-            <p className="text-sm text-muted-foreground">
-              {s.verified_on ? `Last checked ${s.verified_on}` : "Not yet checked — call ahead"}
-              {(s.source_url || s.website) && (
-                <>
-                  {" · "}
-                  <a className="underline" href={(s.source_url || s.website)!} target="_blank" rel="noreferrer">Source</a>
-                </>
-              )}
-            </p>
-          </li>
+          <PlaceCard key={s.id} place={s} selected={selected === s.id} onSelect={setSelected} />
         ))}
       </ul>
     </div>
