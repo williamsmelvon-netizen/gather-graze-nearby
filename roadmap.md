@@ -11,5 +11,6 @@
 - [x] Nearby: distance options 2/5/10/20 mi, default 10
 - [x] Nearby: empty state with one-tap widen
 - [x] Nearby: distance shown on each place card and map pin
-- [ ] Later: cost panel, AI drafts
+- [x] Recipes tab + Browse All Recipes page
+- [x] Add 10 more recipes (25 total, 5 per cuisine)
 - [ ] Later: cost panel, AI drafts
