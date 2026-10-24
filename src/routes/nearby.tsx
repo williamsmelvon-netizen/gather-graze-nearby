@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 
-type Search = { address?: string };
+type Search = { address?: string | undefined };
 
 export const Route = createFileRoute("/nearby")({
   validateSearch: (s: Record<string, unknown>): Search => ({
