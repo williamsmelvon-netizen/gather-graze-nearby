@@ -71,7 +71,7 @@ export default function PlacesMap({
       markers.current[p.id] = marker;
     }
     if (origin) {
-      mod.circle([origin.lat, origin.lng], { radius: radiusMiles * 1609.34, color: primary, weight: 1, fillOpacity: 0.06 }).addTo(layer.current);
+      mod.circle([origin.lat, origin.lng], { radius: radiusMiles * 1609.34, color: primary, weight: 1, fillOpacity: 0.06, interactive: false }).addTo(layer.current);
       mod.circleMarker([origin.lat, origin.lng], { radius: 7, color: primary, fillColor: primary, fillOpacity: 1 }).bindPopup("You").addTo(layer.current);
       pts.push([origin.lat, origin.lng]);
     }
