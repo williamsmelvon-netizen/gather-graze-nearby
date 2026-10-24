@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { getCuisine } from "@/lib/recipes.functions";
+import { LoadError } from "@/components/LoadError";
 
 export const Route = createFileRoute("/cuisine/$cuisineId")({
   head: () => ({
@@ -16,16 +17,14 @@ export const Route = createFileRoute("/cuisine/$cuisineId")({
 
 function Cuisine() {
   const { cuisineId } = Route.useParams();
-  const { data } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryKey: ["cuisine", cuisineId],
-    queryFn: async () => {
-      const [c, r] = await Promise.all([
-        supabase.from("cuisines").select("*").eq("id", cuisineId).maybeSingle(),
-        supabase.from("recipes").select("*").eq("cuisine_id", cuisineId).eq("status", "published"),
-      ]);
-      return { cuisine: c.data, recipes: r.data ?? [] };
-    },
+    queryFn: () => getCuisine({ data: { id: cuisineId } }),
   });
+
+  if (isError) return <LoadError onRetry={() => refetch()} />;
+  if (!data) return <p className="text-muted-foreground">Loading recipes…</p>;
+
 
   return (
     <div className="space-y-4">
