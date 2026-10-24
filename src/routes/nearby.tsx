@@ -44,7 +44,7 @@ function Nearby() {
   const { address } = Route.useSearch();
   const navigate = useNavigate({ from: "/nearby" });
   const geocode = useServerFn(geocodeAddress);
-  const [radius, setRadius] = useState(5);
+  const [radius, setRadius] = useState(10);
   const [active, setActive] = useState<string[]>([]);
   const [query, setQuery] = useState(address && address !== "my-location" ? address : "");
   const [origin, setOrigin] = useState<LatLng | null>(null);
