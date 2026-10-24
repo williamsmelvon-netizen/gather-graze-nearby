@@ -13,6 +13,7 @@
 - [x] Nearby: distance shown on each place card and map pin
 - [x] Recipes tab + Browse All Recipes page
 - [x] Add 10 more recipes (25 total, 5 per cuisine)
+- [x] Shopping list: "Add item" input to type and add custom items (Add button + Enter, duplicate/empty safe, persists on device)
 - [ ] Later: cost panel, AI drafts
 - [x] Recipes tab blank: load recipes via app server (browser can't reach data host directly), show errors
 - [x] Home, cuisine and recipe pages load through the app server
