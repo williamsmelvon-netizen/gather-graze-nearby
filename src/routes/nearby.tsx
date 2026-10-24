@@ -115,7 +115,7 @@ function Nearby() {
       </form>
 
       <div role="group" aria-label="Distance" className="flex gap-2">
-        {[1, 3, 5].map((r) => (
+        {[2, 5, 10, 20].map((r) => (
           <button
             key={r}
             onClick={() => setRadius(r)}
