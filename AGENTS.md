@@ -12,3 +12,4 @@
 - Admin access is checked via public.user_roles + has_role(); all content writes are admin-only in RLS.
 - Address lookup goes through a server function calling OpenStreetMap Nominatim, bounded to Detroit/Hamtramck/Highland Park; the map is Leaflet loaded client-only (lazy + ClientOnly) to keep it out of SSR and the initial bundle.
 - The bottom navigation is a fixed overlay: keep html scroll-padding-bottom and main's bottom padding taller than the nav, so content scrolled into view is never hidden behind it.
+- Public pages load data through createServerFn (same-origin) rather than the browser Supabase client, because some shoppers' networks block the database host.

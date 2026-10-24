@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { listRecipes } from "@/lib/recipes.functions";
 import { Button } from "@/components/ui/button";
 import { byCuisine, grouped, tagLabel, totalMinutes, type RecipeCard } from "@/lib/recipes";
 
@@ -37,20 +37,22 @@ const chip = (active: boolean) =>
 
 function Recipes() {
   const { cuisine } = Route.useSearch();
-  const { data: recipes = [] } = useQuery({
-    queryKey: ["recipes"],
-    queryFn: async () =>
-      ((await supabase
-        .from("recipes")
-        .select("id,title,description,servings,prep_minutes,cook_minutes,tags,cuisines(name)")
-        .eq("status", "published")
-        .order("title")).data ?? []) as RecipeCard[],
+  const { data, isError, isPending, refetch } = useQuery({
+    queryKey: ["recipes-all"],
+    queryFn: () => listRecipes(),
   });
-  const { data: cuisines = [] } = useQuery({
-    queryKey: ["cuisines"],
-    queryFn: async () =>
-      (await supabase.from("cuisines").select("id,name").order("sort_order")).data ?? [],
-  });
+  const recipes = (data?.recipes ?? []) as RecipeCard[];
+  const cuisines = data?.cuisines ?? [];
+
+  if (isError)
+    return (
+      <div role="alert" className="space-y-3 rounded-lg border border-border bg-card p-5 text-center">
+        <h1 className="text-2xl font-semibold">We couldn’t load recipes</h1>
+        <p className="text-muted-foreground">Check your connection and try again.</p>
+        <Button className="h-12 text-base" onClick={() => refetch()}>Try again</Button>
+      </div>
+    );
+  if (isPending) return <p className="text-muted-foreground">Loading recipes…</p>;
 
   const shown = grouped(byCuisine(recipes, cuisine ?? null));
 
