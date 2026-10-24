@@ -7,4 +7,6 @@
 - [x] Source URL, contact (phone/email) and last-verified date on every place
 - [x] Nearby: OR filters, Leaflet map, address search, radius, distance sort
 - [ ] Nearby: link each map pin to its place detail card
+- [ ] Nearby: clear last-verified date on each place card
+- [ ] Later: cost panel, AI drafts
 - [ ] Later: cost panel, AI drafts
