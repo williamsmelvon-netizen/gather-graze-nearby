@@ -23,20 +23,13 @@ function Index() {
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
   const month = new Date().getMonth() + 1;
-  const { data: cuisines = [] } = useQuery({
-    queryKey: ["cuisines"],
-    queryFn: async () => (await supabase.from("cuisines").select("*").order("sort_order")).data ?? [],
+  const { data, isError, refetch } = useQuery({
+    queryKey: ["home", month],
+    queryFn: () => getHomeData({ data: { month } }),
   });
-  const { data: featured = [] } = useQuery({
-    queryKey: ["featured"],
-    queryFn: async () =>
-      (await supabase.from("recipes").select("id,title,description,prep_minutes,cook_minutes,cuisines(name)").eq("status", "published").order("created_at", { ascending: false }).limit(6)).data ?? [],
-  });
-  const { data: inSeason = [] } = useQuery({
-    queryKey: ["in-season", month],
-    queryFn: async () =>
-      (await supabase.from("produce").select("name").contains("season_months", [month])).data ?? [],
-  });
+  const cuisines = data?.cuisines ?? [];
+  const featured = data?.featured ?? [];
+  const inSeason = data?.inSeason ?? [];
 
   return (
     <div className="space-y-8">

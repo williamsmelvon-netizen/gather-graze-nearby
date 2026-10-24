@@ -20,18 +20,13 @@ export const Route = createFileRoute("/recipe/$recipeId")({
 
 function Recipe() {
   const { recipeId } = Route.useParams();
-  const { data } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryKey: ["recipe", recipeId],
-    queryFn: async () => {
-      const [r, i] = await Promise.all([
-        supabase.from("recipes").select("*").eq("id", recipeId).maybeSingle(),
-        supabase.from("recipe_ingredients").select("*").eq("recipe_id", recipeId),
-      ]);
-      return { recipe: r.data, ingredients: i.data ?? [] };
-    },
+    queryFn: () => getRecipe({ data: { id: recipeId } }),
   });
   const [servings, setServings] = useState<number | null>(null);
 
+  if (isError) return <LoadError onRetry={() => refetch()} />;
   if (!data) return <p>Loading…</p>;
   if (!data.recipe) return <p>We couldn’t find that recipe.</p>;
   const base = data.recipe.servings;
@@ -42,7 +37,7 @@ function Recipe() {
   const add = async () => {
     const ids = Array.from(new Set([...getLocalList(), recipeId]));
     setLocalList(ids);
-    await supabase.rpc("save_shopping_list", { _device_id: getDeviceId(), _recipe_ids: ids });
+    await saveList({ data: { deviceId: getDeviceId(), ids } }).catch(() => null);
     toast.success("Added to your shopping list");
   };
 
