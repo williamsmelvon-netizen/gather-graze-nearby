@@ -58,14 +58,14 @@ function Index() {
           className="h-14 text-lg"
         />
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button type="submit" size="lg" className="h-12 flex-1 text-base">
+          <Button type="submit" size="lg" className="h-12 text-base sm:flex-1">
             Find food near me
           </Button>
           <Button
             type="button"
             variant="secondary"
             size="lg"
-            className="h-12 flex-1 text-base"
+            className="h-12 text-base sm:flex-1"
             onClick={() => navigate({ to: "/nearby", search: { address: "my-location" } })}
           >
             <LocateFixed className="mr-2 h-5 w-5" /> Use my location
