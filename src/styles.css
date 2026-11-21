@@ -149,7 +149,12 @@
   h1, h2, h3 { font-family: var(--font-display); }
 }
 
-/* Keep content clear of the fixed bottom navigation */
+/* Keep content clear of the fixed bottom navigation.
+   env(safe-area-inset-bottom) keeps it clear of the iPhone home indicator too. */
 html {
-  scroll-padding-bottom: 5.5rem;
+  scroll-padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+nav[aria-label="Main"] {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
